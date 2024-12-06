@@ -1,0 +1,18 @@
+2. Funcionalidades do App
+Listagem de rádios por país, gênero ou popularidade.
+Busca por nome ou palavra-chave.
+Player de áudio com controles básicos (play/pause).
+Favoritar estações para acesso rápido.
+Salvar a última estação ouvidas no armazenamento local.
+
+4. Design
+Deixe a interface intuitiva:
+
+Use uma lista para exibir estações com nome, país e gênero.
+Um player compacto com o nome da rádio e controles de reprodução.
+Página para favoritos ou lista de estações recentemente ouvidas.
+
+5. Extras para Melhorar
+Geolocalização: Sugira rádios do país atual do usuário.
+Animações: Adicione transições suaves e animações no player.
+Dark Mode: Inclua suporte a temas claro e escuro.
