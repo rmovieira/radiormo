@@ -1,25 +1,34 @@
 import { SearchBar } from "@rneui/themed"
-import { useCallback } from "react"
+import { useCallback, useEffect, useState } from "react"
 import { debounce } from "lodash"
 
-export default function BarraPesquisa({ filtrar, filtro }) {
+export default function BarraPesquisa({ filtrar }) {
+    const [filtro, setFiltro] = useState('')
+
     const onChangeText = useCallback(texto => {
-        console.log('xxx', texto)
         filtrar(texto)
     }, [])
+    
+    const handleChange = useCallback(debounce(onChangeText, 500), [])
 
     const onClear = useCallback(() => {
         filtrar()
+        setFiltro('')
     }, [])
 
-    const handleChange = useCallback(debounce(onChangeText, 500), [])
+
+    useEffect(()=>{
+        handleChange(filtro)
+    },[filtro])
+
+
 
     return (
         <SearchBar
             onClear={onClear}
             platform={'android'}
             placeholder="Digita o nome da rádio"
-            onChangeText={handleChange}
+            onChangeText={setFiltro}
             value={filtro}
         />
     )

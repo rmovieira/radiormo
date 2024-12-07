@@ -1,23 +1,36 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { StyleSheet } from 'react-native'
 import { Audio } from 'expo-av'
-import * as Location from 'expo-location'
 import useFetch from './src/estacoes/CarregadorEstacoes'
 import Constants from 'expo-constants'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import AntDesign from '@expo/vector-icons/AntDesign'
 import { Icon, SearchBar } from '@rneui/themed'
 import ContainerEstacoes from './src/estacoes/ContainerEstacoes'
-import BarraPesquisa from './src/estacoes/BarraPesquisa'
 import Tocador from './src/tocador/Tocador'
+import * as Notifications from 'expo-notifications'
 
 export default function App() {
-  const [radio, setRadio] = useState()
+  const tocadorRef = useRef(null)
+  useEffect(() => {
+    Notifications.setNotificationHandler({
+      handleNotification: async () => ({
+        shouldShowAlert: true,
+        shouldPlaySound: false,
+        shouldSetBadge: false,
+      }),
+    })
+  }, [])
+
+  const setRadio = useCallback((radio) => {
+    if (!tocadorRef || !tocadorRef.current) return
+    tocadorRef.current.tocar(radio)
+  }, [tocadorRef])
 
   return (
     <SafeAreaView style={{ flex: 1, marginTop: Constants.statusBarHeight }}>
-      <Tocador radio={radio} />
-      <ContainerEstacoes setRadio={setRadio}/>
+      <Tocador ref={tocadorRef} />
+      <ContainerEstacoes setRadio={setRadio} />
     </SafeAreaView>
   )
 }

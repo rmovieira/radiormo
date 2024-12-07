@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import useFetch from '../helper/useFetch'
 import { SafeAreaView, StyleSheet, Text, View } from 'react-native'
 
@@ -10,15 +10,12 @@ export const useEstacoes = () => useEstacoesState() || {}
 
 
 
-export default CarregadorEstacoes = ({ children }) => {
-    const { setFiltro, filtro, dados, carregando, erro } = useFetch()
-    // console.log('---', carregando, erro)
-    const [radios, setRadios] = useState(dados)
+export default CarregadorEstacoes = ({ children,filtro }) => {
+    const { dados, carregando, erro } = useFetch(filtro)
 
     return (
-        <Provider value={{ estacoes: dados, carregando, erro, filtro, filtrar: setFiltro }}>
+        <Provider value={{ estacoes: dados, carregando, erro }}>
             <SafeAreaView style={styles.container}>
-
                 {carregando && <Text>{'carregando'}</Text>}
                 {!carregando && children}
             </SafeAreaView>

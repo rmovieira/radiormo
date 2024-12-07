@@ -9,10 +9,14 @@
     "newArchEnabled": true,
     "plugins": [
       [
-        "expo-location",
+        "expo-av",
         {
-          "locationAlwaysAndWhenInUsePermission": "Allow $(PRODUCT_NAME) to use your location."
+          "microphonePermission": "Permitir que este aplicativo acesse o microfone."
         }
+      ],
+      [
+        "expo-notifications",
+        {        }
       ]
     ],
     "splash": {
@@ -21,9 +25,13 @@
       "backgroundColor": "#ffffff"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "infoPlist": {
+        "UIBackgroundModes": ["audio"]
+      }
     },
     "android": {
+      "permissions": ["FOREGROUND_SERVICE"],
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
