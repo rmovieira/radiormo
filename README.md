@@ -1,0 +1,1 @@
+Funciona apenas no Android
