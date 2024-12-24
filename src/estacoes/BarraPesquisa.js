@@ -27,7 +27,7 @@ export default function BarraPesquisa({ filtrar }) {
         <SearchBar
             onClear={onClear}
             platform={'android'}
-            placeholder="Digita o nome da rádio"
+            placeholder="Digite o nome da rádio que você quer ouvir"
             onChangeText={setFiltro}
             value={filtro}
         />
