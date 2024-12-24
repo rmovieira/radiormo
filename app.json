@@ -8,7 +8,9 @@
     "userInterfaceStyle": "light",
     "newArchEnabled": true,
     "updates": {
+      "enabled": true,
       "fallbackToCacheTimeout": 0,
+      "checkAutomatically": "ON_LOAD",
       "url": "https://u.expo.dev/b1865503-779f-44e9-9ee1-eb596ee937ac"
     },
     "plugins": [
