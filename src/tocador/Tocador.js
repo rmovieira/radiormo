@@ -1,87 +1,62 @@
 import { forwardRef, useEffect, useImperativeHandle, useState } from "react"
-import { Audio } from "expo-av"
 import { Button, Card, Icon, Image } from "@rneui/themed"
 import { TouchableWithoutFeedback, View } from "react-native"
-import * as Notifications from 'expo-notifications'
+import { useServicoTocador } from "../ServicoTocador"
 
 
-const Botoes = ({ desabilitado, tocando, acao }) => {
-    if (tocando) {
+const Botoes = ({ status, parar, tocar }) => {
+
+    if (status === 'tocando') {
         return <Icon
-            disabled={desabilitado}
             Component={TouchableWithoutFeedback}
             size={64}
             type="antdesign"
             name='pausecircle'
-            onPress={acao}
+            onPress={parar}
         />
     }
 
-    return <Icon
-        Component={TouchableWithoutFeedback}
-        containerStyle={{ shadowColor: 'white', backgroundColor: 'white' }}
-        disabled={desabilitado}
-        size={64}
-        type="antdesign"
-        name='play'
-        onPress={acao}
-    />
+    if (status === 'parado') {
+        return <Icon
+            Component={TouchableWithoutFeedback}
+            containerStyle={{ shadowColor: 'white', backgroundColor: 'white' }}
+            size={64}
+            type="antdesign"
+            name='play'
+            onPress={tocar}
+        />
+    }
+    return <Button size={64} loadingProps={{size: 64}} title="Solid" type="clear" loading />
 
 }
 
 const Tocador = forwardRef((props, ref) => {
-    const [radio, setRadio] = useState({})
-    const [sound, setSound] = useState(null)
-    const [isPlaying, setIsPlaying] = useState(false)
+    const [radio, setRadio] = useState()
+    const { tocar, parar, status } = useServicoTocador(radio)
 
     useImperativeHandle(ref, () => ({
-        async tocar(radio) {
+        async definirRadio(radio) {
             setRadio(radio)
         },
     }))
+
     useEffect(() => {
-        if (!radio.url) return
-        playAudio()
-    }, [radio.url])
-
-    const playAudio = async () => {
         if (!radio) return
-        if (sound) {
-            await stopAudio()
-        }
+        tocarRadio()
+    }, [radio])
 
-        await Audio.setAudioModeAsync({
-            staysActiveInBackground: true,
-        })
-        Notifications.dismissAllNotificationsAsync()
-        Notifications.scheduleNotificationAsync({
-            content: {
-                title: 'Tocando rádio',
-                body: radio.name,
-            },
-            trigger: null,
-        })
+    const tocarRadio = async () => {
+        await tocar()
 
-        const { sound: newSound } = await Audio.Sound.createAsync(
-            { uri: radio.url },
-            { shouldPlay: true },
-        )
-        setSound(newSound)
-        setIsPlaying(true)
     }
 
-    const stopAudio = async () => {
-        Notifications.dismissAllNotificationsAsync()
-        if (sound) {
-            await sound.stopAsync()
-        }
-        setIsPlaying(false)
-        setSound(null)
+    const pararRadio = async () => {
+        await parar()
     }
 
-    if (!radio.url) {
+    if (!radio?.url) {
         return (
-            <View style={{ flex: 1, justifyContent: 'center',alignItems:'center' }}>
+            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
                 <Image
                     resizeMode="contain"
                     style={{ padding: 0, height: 150, width: 150 }}
@@ -90,6 +65,7 @@ const Tocador = forwardRef((props, ref) => {
             </View>
         )
     }
+
 
     return (
         <Card>
@@ -102,7 +78,7 @@ const Tocador = forwardRef((props, ref) => {
             />
             <Button
                 color="transparent"
-                icon={<Botoes desabilitado={!radio.url} tocando={isPlaying} acao={isPlaying ? stopAudio : playAudio} />}
+                icon={<Botoes status={status} parar={pararRadio} tocar={tocarRadio} />}
                 buttonStyle={{
                     borderRadius: 0,
                     marginLeft: 0,

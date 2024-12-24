@@ -3,7 +3,6 @@ import { useCallback, useEffect, useState } from "react"
 const URL = 'https://de1.api.radio-browser.info/json/stations/search?limit=9990&countrycode=BR&hidebroken=true&order=clickcount&reverse=true'
 
 export const useFetch = (filtro) => {
-    console.log('useFetch', filtro)
     const [carregando, setCarregando] = useState()
     const [dados, setDados] = useState()
     const [erro, setErro] = useState()

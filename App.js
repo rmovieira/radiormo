@@ -35,7 +35,7 @@ export default function App() {
 
   const setRadio = useCallback((radio) => {
     if (!tocadorRef || !tocadorRef.current) return
-    tocadorRef.current.tocar(radio)
+    tocadorRef.current.definirRadio(radio)
   }, [tocadorRef])
 
   return (

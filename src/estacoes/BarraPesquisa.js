@@ -3,7 +3,7 @@ import { useCallback, useEffect, useState } from "react"
 import { debounce } from "lodash"
 
 export default function BarraPesquisa({ filtrar }) {
-    const [filtro, setFiltro] = useState('')
+    const [filtro, setFiltro] = useState('atl')
 
     const onChangeText = useCallback(texto => {
         filtrar(texto)
@@ -27,7 +27,7 @@ export default function BarraPesquisa({ filtrar }) {
         <SearchBar
             onClear={onClear}
             platform={'android'}
-            placeholder="Digite o nome da rádioxxx"
+            placeholder="Digite o nome da rádio"
             onChangeText={setFiltro}
             value={filtro}
         />
