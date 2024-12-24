@@ -9,9 +9,20 @@ import { Icon, SearchBar } from '@rneui/themed'
 import ContainerEstacoes from './src/estacoes/ContainerEstacoes'
 import Tocador from './src/tocador/Tocador'
 import * as Notifications from 'expo-notifications'
+import * as Updates from "expo-updates"
 
 export default function App() {
   const tocadorRef = useRef(null)
+  useEffect(() => {
+    async function updateApp() {
+      const { isAvailable } = await Updates.checkForUpdateAsync()
+      if (isAvailable) {
+        await Updates.fetchUpdateAsync()
+        await Updates.reloadAsync() // depende da sua estratégia
+      }
+    }
+    updateApp()
+  }, [])
   useEffect(() => {
     Notifications.setNotificationHandler({
       handleNotification: async () => ({
